@@ -21,7 +21,7 @@ jobs:
 
       - name: Check if the URL is reachable
         run: |
-            curl -I https://eg-srvr4.evergreen-home.com/app/portal
+            curl -L https://eg-srvr4.evergreen-home.com/app/portal
 
       - name: Install dependencies
         run: |
