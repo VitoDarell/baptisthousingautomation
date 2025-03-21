@@ -98,6 +98,7 @@ try:
     csvDownloadButton = WebDriverWait(driver, 10).until(
         EC.element_to_be_clickable((By.ID, "exportButton"))
     )
+    driver.execute_script("arguments[0].scrollIntoView(true);", csvDownloadButton)
     csvDownloadButton.click()
 
     time.sleep(5)
