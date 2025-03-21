@@ -54,9 +54,11 @@ try:
     passsword_field = driver.find_element(By.ID, "password")
     passsword_field.send_keys(os.getenv("EVERGREEN_PASS"))
     submit = driver.find_element(By.ID, "logonButton").click()
-     
-    time.sleep(0.3)
-    submit = driver.find_element(By.ID, "logonButton").click()
+
+    submit = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.ID, "logonButton"))
+    )
+    submit.click()
 
     time.sleep(0.3)
     question1 = driver.find_element(By.XPATH, "//input[@placeholder='What is the make and colour of your first car?']")
