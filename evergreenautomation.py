@@ -48,8 +48,10 @@ try:
     primary_button.click()  # Click the button
 
     time.sleep(0.3)
-
-    username_field = driver.find_element(By.ID, "username")
+    
+    username_field = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.ID, "username"))
+    )
     username_field.send_keys(os.getenv("EVERGREEN_USER"))
     passsword_field = driver.find_element(By.ID, "password")
     passsword_field.send_keys(os.getenv("EVERGREEN_PASS"))
@@ -83,7 +85,6 @@ try:
     )
     element.click()
 
-    time.sleep(.3)
     csvDownload = WebDriverWait(driver, 10).until(
         EC.element_to_be_clickable((By.ID, "exportToCSV"))
     )
@@ -91,11 +92,13 @@ try:
     csvName = WebDriverWait(driver, 10).until(
         EC.element_to_be_clickable((By.ID, "csvFilename"))
     )
-
     csvName.clear()
     csvName.send_keys("completedUserTemp.csv")
-    time.sleep(1)
-    csvDownloadButton = driver.find_element(By.ID, "exportButton").click()
+
+    csvDownloadButton = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.ID, "exportButton"))
+    )
+    csvDownloadButton.click()
 
     time.sleep(5)
 
