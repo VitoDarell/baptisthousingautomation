@@ -22,8 +22,8 @@ if not os.path.exists(download_dir):
 
 # Set up Chrome options to download files to the specified directory
 chrome_options = Options()
-chrome_options.add_argument("--headless")  # Optional: Run in headless mode for GitHub Actions
-chrome_options.add_argument("--disable-gpu")  # Optional for headless mode
+# chrome_options.add_argument("--headless")  # Optional: Run in headless mode for GitHub Actions
+# chrome_options.add_argument("--disable-gpu")  # Optional for headless mode
 
 # Set download directory
 prefs = {"download.default_directory": download_dir}
