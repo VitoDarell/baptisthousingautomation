@@ -1,0 +1,36 @@
+name: Run main.py daily
+
+on:
+  schedule:
+    - cron: '30 0 * * *'  # Runs at 5:30 PM Vancouver time (UTC-7 or UTC-8 depending on DST)
+
+  workflow_dispatch:  # Allows manual triggering
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt  # Make sure you have a requirements.txt file if needed
+
+      - name: Decode and create service account JSON
+        run: echo "${{ secrets.SERVICE_ACCOUNT_JSON }}" | base64 --decode > service-account.json
+
+      - name: Run script
+        env:
+            SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
+            EVERGREEN_PASS: ${{ secrets.EVERGREEN_PASS }}
+            EVERGREEN_USER: ${{ secrets.EVERGREEN_USER }}
+            EVERGREEN_QUESTION1: ${{ secrets.EVERGREEN_QUESTION1 }}
+            EVERGREEN_QUESTION2: ${{ secrets.EVERGREEN_QUESTION2 }}
+        run: python main.py

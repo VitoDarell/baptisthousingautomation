@@ -16,7 +16,7 @@ SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
 # The ID of your spreadsheet.
 SPREADSHEET_ID = os.getenv("SPREADSHEET_ID")  # Replace with spreadsheet ID
 SHEET_NAME = "completedUsers" #Replace with sheet name.
-SERVICE_ACCOUNT_FILE = "baptisthousingevergreen-credentials.json"
+SERVICE_ACCOUNT_FILE = os.getenv("GOOGLE_API_TOKEN")
 
 def send_csv_to_sheets(csv_file_path, spreadsheet_id, sheet_name, service_account_file):
     try:
