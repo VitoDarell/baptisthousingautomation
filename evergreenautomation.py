@@ -1,5 +1,5 @@
-import os.path
 import os
+import tempfile
 from dotenv import load_dotenv
 
 from selenium.webdriver.common.by import By
@@ -12,7 +12,6 @@ import time
 
 load_dotenv()
 
-
 print("Starting Evergreen Automation")
 
 # Path to where you want to save the downloaded file
@@ -22,8 +21,14 @@ if not os.path.exists(download_dir):
 
 # Set up Chrome options to download files to the specified directory
 chrome_options = Options()
-# chrome_options.add_argument("--headless")  # Optional: Run in headless mode for GitHub Actions
-# chrome_options.add_argument("--disable-gpu")  # Optional for headless mode
+chrome_options.add_argument("--headless")  # Run in headless mode for GitHub Actions
+chrome_options.add_argument("--disable-gpu")  # Optional for headless mode
+chrome_options.add_argument("--no-sandbox")
+chrome_options.add_argument("--disable-dev-shm-usage")
+
+# Create a unique temporary directory for user data
+user_data_dir = tempfile.mkdtemp()  # Creates a new temporary directory
+chrome_options.add_argument(f"--user-data-dir={user_data_dir}")
 
 # Set download directory
 prefs = {"download.default_directory": download_dir}
@@ -66,7 +71,6 @@ try:
     userList.click()
 
     tbody_element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, "tbody")))
-    
 
     filter = WebDriverWait(driver, 10).until(
         EC.element_to_be_clickable((By.ID, "input_contentUsersfilterColumnAutoComplete"))
@@ -94,5 +98,6 @@ try:
     time.sleep(5)
 
 finally:
-    # Close the browser
+    # Clean up temporary user data dir and close the browser
+    os.rmdir(user_data_dir)  # Cleanup if needed
     driver.quit()
