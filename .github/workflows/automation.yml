@@ -19,9 +19,9 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Check if the URL is reachable
+      - name: Create service account JSON file
         run: |
-            curl -L https://eg-srvr4.evergreen-home.com/app/portal
+          echo "${{ secrets.GOOGLE_API_TOKEN }}" > /tmp/baptisthousingevergreen-credentials.json
 
       - name: Install dependencies
         run: |
@@ -37,3 +37,7 @@ jobs:
             EVERGREEN_QUESTION2: ${{ secrets.EVERGREEN_QUESTION2 }}
             GOOGLE_API_TOKEN: ${{ secrets.GOOGLE_API_TOKEN }}
         run: python main.py
+
+      - name: Clean up
+        run: |
+          rm /tmp/baptisthousingevergreen-credentials.json
