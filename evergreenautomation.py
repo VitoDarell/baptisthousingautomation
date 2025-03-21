@@ -105,5 +105,4 @@ try:
 
 finally:
     # Clean up temporary user data dir and close the browser
-    os.rmdir(user_data_dir)  # Cleanup if needed
     driver.quit()
